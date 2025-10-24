@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CADASTRO</title>
+</head>
+<body>
+    <h3>Formulario de Cadastro de Funcionarios</h3>
+    <hr>
+
+    <form id="formCadastro">
+        <label for="nome">Nome:</label><br>
+        <input type="text" id="nome" name="nome" required><br><br>
+
+        <label for="idade">Idade:</label><br>
+        <input type="number" id="idade" name="idade" min="0" required><br><br>
+
+        <label for="cargo">Cargo:</label><br>
+        <input type="text" id="cargo" name="cargo" required><br><br>
+
+        <label for="salario">Salario:</label><br>
+        <input type="number" id="salario" name="salario" min="0" step="0.1" required><br><br>
+
+        <input id="btsalvar" type="submit" value="Salvar">
+    </form>
+
+    <hr>
+
+    <h3>Lista de Funcionarios</h3>
+
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th bgcolor="gray" width="150">ID</th>
+                <th bgcolor="gray" width="150">Nome</th>
+                <th bgcolor="gray" width="150">Idade</th>
+                <th bgcolor="gray" width="150">Cargo</th>
+                <th bgcolor="gray" width="150">Salario</th>
+            </tr>
+        </thead>
+        <tbody id="tabela"></tbody>
+    </table>
+
+    <script src="/js/funcionario.js"></script>
+</body>
+</html>
