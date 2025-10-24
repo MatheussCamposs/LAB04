@@ -17,7 +17,7 @@ class Funcionario{
     set_salario(salario) { this.salario = salario; }
 
     toString() {
-        return `Nome: ${this.nome}, Idade: ${this.idade}, Cargo: ${this.cargo}, Salario: ${this.salario.toFixed(2)}`;
+        return `Nome: ${this.nome}, Idade: ${this.idade}, Cargo: ${this.cargo}, Salário: ${this.salario.toFixed(2)}`;
     }
 }
 
@@ -30,16 +30,28 @@ class FuncionarioController {
     }
 
     init() {
-        document.getElementById('btsalvar').addEventListener("click", (e) => this.salvar(e));
+        document.getElementById("btsalvar").addEventListener("click", (e) => this.salvar(e));
+        document.getElementById("btbuscar").addEventListener("click", () => {
+            const nome = document.getElementById("nomebusca").value;
+            const resultado = this.buscarPorNome(nome);
+            const resultadoEl = document.getElementById("resultadoBusca");
+
+            if(resultado) {
+                resultadoEl.innerText = `Funcionário encontrado: ${resultado.toString()}`;
+            } 
+            else {
+                resultadoEl.innerText = "Funcionário não encontrado.";
+            }
+        });
     }
 
     salvar(e) {
         e.preventDefault();
 
-        const nome = document.getElementById('nome').value;
-        const idade = parseInt(document.getElementById('idade').value);
-        const cargo = document.getElementById('cargo').value;
-        const salario = parseFloat(document.getElementById('salario').value);
+        const nome = document.getElementById("nome").value;
+        const idade = parseInt(document.getElementById("idade").value);
+        const cargo = document.getElementById("cargo").value;
+        const salario = parseFloat(document.getElementById("salario").value);
 
         const funcionario = new Funcionario();
 
@@ -52,7 +64,7 @@ class FuncionarioController {
             this.funcionarios[this.indexEditando] = funcionario;
             this.editando = false;
             this.indexEditando = null;
-            document.getElementById('btsalvar').value = "Salvar";
+            document.getElementById("btsalvar").value = "Salvar";
         }
         else {
             this.funcionarios.push(funcionario);
@@ -95,14 +107,14 @@ class FuncionarioController {
     editar(index) {
         const funcionario = this.funcionarios[index];
 
-        document.getElementById('nome').value = funcionario.get_nome();
-        document.getElementById('idade').value = funcionario.get_idade();
-        document.getElementById('cargo').value = funcionario.get_cargo();
-        document.getElementById('salario').value = funcionario.get_salario();
+        document.getElementById("nome").value = funcionario.get_nome();
+        document.getElementById("idade").value = funcionario.get_idade();
+        document.getElementById("cargo").value = funcionario.get_cargo();
+        document.getElementById("salario").value = funcionario.get_salario();
 
         this.editando = true;
         this.indexEditando = index;
-        document.getElementById('btsalvar').value = "Salvar Edição";
+        document.getElementById("btsalvar").value = "Salvar Edição";
 
         this.excluir(index);
     }
@@ -112,11 +124,13 @@ class FuncionarioController {
         this.atualizarTabela();
     }
 
+    buscarPorNome = (nome) => this.funcionarios.find(f => f.get_nome().toLowerCase() === nome.toLowerCase());
+
     limpaFormulario() {
-        document.getElementById('nome').value = '';
-        document.getElementById('idade').value = '';
-        document.getElementById('cargo').value = '';
-        document.getElementById('salario').value = '';
+        document.getElementById("nome").value = "";
+        document.getElementById("idade").value = "";
+        document.getElementById("cargo").value = "";
+        document.getElementById("salario").value = "";
     }
 }
 
