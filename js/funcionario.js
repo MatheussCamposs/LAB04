@@ -134,20 +134,6 @@ class FuncionarioController {
         document.getElementById("salario").value = "";
     }
 
-    mediaSalario() {
-        const ret = 0;
-        if(this.funcionarios.length > 0) {
-            ret = this.funcionarios.reduce((acc, funcionario) => acc + funcionario);
-            ret /= this.funcionarios.length;
-        }
-        return ret;
-    }
-
-    maiorQue(limite) {
-        const ret = this.funcionarios.filter(funcionario => funcionario.get_salario() > 5000.0);
-        return ret; 
-    }
-
     gerarRelatorio() {
         const relatorioEl = document.getElementById('relatorio');
 
