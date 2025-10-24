@@ -31,6 +31,7 @@ class FuncionarioController {
 
     init() {
         document.getElementById("btsalvar").addEventListener("click", (e) => this.salvar(e));
+        document.getElementById('btRelatorio').addEventListener('click', () => this.gerarRelatorio());
         document.getElementById("btbuscar").addEventListener("click", () => {
             const nome = document.getElementById("nomebusca").value;
             const resultado = this.buscarPorNome(nome);
@@ -132,6 +133,69 @@ class FuncionarioController {
         document.getElementById("cargo").value = "";
         document.getElementById("salario").value = "";
     }
+
+    mediaSalario() {
+        const ret = 0;
+        if(this.funcionarios.length > 0) {
+            ret = this.funcionarios.reduce((acc, funcionario) => acc + funcionario);
+            ret /= this.funcionarios.length;
+        }
+        return ret;
+    }
+
+    maiorQue(limite) {
+        const ret = this.funcionarios.filter(funcionario => funcionario.get_salario() > 5000.0);
+        return ret; 
+    }
+
+    gerarRelatorio() {
+        const relatorioEl = document.getElementById('relatorio');
+
+        const salariosAltos = this.funcionarios.filter(f => f.get_salario() > 5000);
+
+        let mediaSalarial = 0;
+        if(this.funcionarios.length > 0) {
+            mediaSalarial = this.funcionarios.reduce((soma, f) => soma + f.get_salario(), 0);
+            mediaSalarial /= this.funcionarios.length;
+        }
+
+        const cargosUnicos = new Set(this.funcionarios.map(f => f.get_cargo()));
+
+        const nomesMaiusculo = this.funcionarios.map(f => f.get_nome().toUpperCase());
+
+        relatorioEl.innerHTML = '';
+
+        const salariosAltosLista = document.createElement('ul');
+        salariosAltos.forEach(f => {
+            const li = document.createElement('li');
+            li.textContent = f.toString();
+            salariosAltosLista.appendChild(li);
+        });
+        relatorioEl.appendChild(document.createTextNode('Funcionários com salário > 5000:'));
+        relatorioEl.appendChild(salariosAltosLista);
+
+        const mediaP = document.createElement('p');
+        mediaP.textContent = `Média salarial: ${mediaSalarial.toFixed(2)}`;
+        relatorioEl.appendChild(mediaP);
+
+        const cargosLista = document.createElement('ul');
+        for (const cargo of cargosUnicos) {
+            const li = document.createElement('li');
+            li.textContent = cargo;
+            cargosLista.appendChild(li);
+        }
+        relatorioEl.appendChild(document.createTextNode('Cargos únicos:'));
+        relatorioEl.appendChild(cargosLista);
+
+        const nomesLista = document.createElement('ul');
+        nomesMaiusculo.forEach(nome => {
+            const li = document.createElement('li');
+            li.textContent = nome;
+            nomesLista.appendChild(li);
+        });
+        relatorioEl.appendChild(document.createTextNode('Nomes dos funcionários'));
+        relatorioEl.appendChild(nomesLista);
+    };
 }
 
 new FuncionarioController();
