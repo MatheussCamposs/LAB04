@@ -4,6 +4,3 @@ services:
     container_name: cadastro-funcionarios
     ports:
       - "8080:80"
-    volumes:
-      - .:/usr/share/nginx/html:ro
-    restart: always
