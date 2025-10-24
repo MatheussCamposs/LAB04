@@ -24,6 +24,8 @@ class Funcionario{
 class FuncionarioController {
     constructor() {
         this.funcionarios = [];
+        this.editando = false;
+        this.indexEditando = null;
         this.init();
     }
 
@@ -46,7 +48,15 @@ class FuncionarioController {
         funcionario.set_cargo(cargo);
         funcionario.set_salario(salario);
 
-        this.funcionarios.push(funcionario);
+        if(this.editando) {
+            this.funcionarios[this.indexEditando] = funcionario;
+            this.editando = false;
+            this.indexEditando = null;
+            document.getElementById('btsalvar').value = "Salvar";
+        }
+        else {
+            this.funcionarios.push(funcionario);
+        }
 
         this.atualizarTabela();
         this.limpaFormulario();
@@ -64,7 +74,42 @@ class FuncionarioController {
             row.insertCell(2).innerText = funcionario.get_idade();
             row.insertCell(3).innerText = funcionario.get_cargo();
             row.insertCell(4).innerText = funcionario.get_salario().toFixed(2);
+
+            const actionCell = row.insertCell(5);
+
+            const btEditar = document.createElement("button");
+            btEditar.innerText = "Editar";
+            btEditar.type = "button";
+            btEditar.addEventListener("click", () => this.editar(index));
+
+            const btExcluir = document.createElement("button");
+            btExcluir.innerText = "Excluir";
+            btExcluir.type = "button";
+            btExcluir.addEventListener("click", () => this.excluir(index));
+
+            actionCell.appendChild(btEditar);
+            actionCell.appendChild(btExcluir);
         });
+    }
+
+    editar(index) {
+        const funcionario = this.funcionarios[index];
+
+        document.getElementById('nome').value = funcionario.get_nome();
+        document.getElementById('idade').value = funcionario.get_idade();
+        document.getElementById('cargo').value = funcionario.get_cargo();
+        document.getElementById('salario').value = funcionario.get_salario();
+
+        this.editando = true;
+        this.indexEditando = index;
+        document.getElementById('btsalvar').value = "Salvar Edição";
+
+        this.excluir(index);
+    }
+
+    excluir(index) {
+        this.funcionarios.splice(index, 1);
+        this.atualizarTabela();
     }
 
     limpaFormulario() {
